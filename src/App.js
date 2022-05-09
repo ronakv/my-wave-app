@@ -17,7 +17,7 @@ const ConnectOrWelcome = (props) =>{
     if(props.userFound){
         return (
             <div>
-                Welcome Back {props.userAccount}
+                Welcome Back
             </div>
         )
     }
@@ -38,7 +38,7 @@ const App = () => {
     const [account, setCurrentAccount] = useState("");
     const [accountFound, toggleAccountFound] = useState(false);
 
-    const contractAddress = 0x5FbDB2315678afecb367f032d93F642f64180aa3;
+    const contractAddress = "0x96027A87CCc0F805a03c099273E45DB83Bc81691";
     const contractABI = abi.abi;
 
 
@@ -79,6 +79,7 @@ const App = () => {
                 const accounts = await ethereum.request({method:"eth_requestAccounts"});
                 setCurrentAccount(accounts[0]);
                 console.log('Account found : ', accounts[0]);
+                toggleAccountFound(true);
             }
         }
 
@@ -96,6 +97,17 @@ const App = () => {
                 const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
                 let count = await wavePortalContract.getTotalWaves();
                 console.log("Total waves: ", count.toNumber());
+                /*
+                * Execute the actual wave from your smart contract
+                */
+                const waveTxn = await wavePortalContract.wave();
+                console.log("Mining...", waveTxn.hash);
+
+                await waveTxn.wait();
+                console.log("Mined -- ", waveTxn.hash);
+
+                count = await wavePortalContract.getTotalWaves();
+                console.log("Retrieved total wave count...", count.toNumber());
             }
             else{
                 console.log('Ethereum Object not found')
@@ -115,6 +127,10 @@ const App = () => {
     useEffect(() => {
         checkIfWalletIsConnected();
     }, [])
+
+    useEffect( () => {
+        console.log(accountFound);
+    }, [accountFound]);
 
     console.log('This state is :', accountFound)
     return (
