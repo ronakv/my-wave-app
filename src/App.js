@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import ethers from "ethers";
+//import ethers from "ethers";
 import "./App.css";
 import abi from './utils/WavePortal.json'
 
@@ -86,7 +86,7 @@ const App = () => {
             console.log(error)
         }
     }
-
+/*
     const wave = async () =>{
         try{
             const {ethereum} = window;
@@ -105,6 +105,8 @@ const App = () => {
             console.log(error)
         }
     }
+
+ */
 
 
     /*
@@ -126,7 +128,7 @@ const App = () => {
                     I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
                 </div>
 
-                <button className="waveButton" onClick={wave}>
+                <button className="waveButton" onClick={null}>
                     Wave at Me
                 </button>
                 <ConnectOrWelcome userFound = {accountFound} userAccount = {account} onClick = {connectWallet}/>
